@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import Formulario from './components/Formulario'
+import Listado from './components/Listado'
 import Axios from 'axios';
 
 function App() {
 
   const [busqueda, setBusqueda] = useState('')
+  const [imagenes, setImagenes] = useState([])
 
   useEffect(() => {
     if(busqueda === '') return;
@@ -13,7 +15,7 @@ function App() {
       const url = `https://pixabay.com/api/?key=18202644-f6430b032268bc6174e356a54&q=${busqueda}&per_page=${ipp}`
 
       const consulta = await Axios.get(url)
-      setBusqueda(consulta.data.hits)
+      setImagenes(consulta.data.hits)
     }
     consultaApi()
   }, [busqueda])
@@ -24,6 +26,11 @@ function App() {
         <p className="lead text-center">Buscador de imagenes</p>
         <Formulario
           setBusqueda = {setBusqueda}
+        />
+      </div>
+      <div className="row justify-content-center">
+        <Listado
+          imagenes = {imagenes}
         />
       </div>
     </div>

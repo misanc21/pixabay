@@ -14,6 +14,7 @@ const Formulario = ( {setBusqueda} ) => {
             setError(true)
             return
         }
+        setError(false)
         setBusqueda(termino)
     }
 

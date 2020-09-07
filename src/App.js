@@ -8,17 +8,37 @@ function App() {
   const [busqueda, setBusqueda] = useState('')
   const [imagenes, setImagenes] = useState([])
 
+  const [paginaActual, setPaginaActual] = useState(1)
+  const [totalPaginas, setTotalPaginas] = useState(1)
+
   useEffect(() => {
     if(busqueda === '') return;
     const consultaApi = async()=> {
       const ipp = 30
-      const url = `https://pixabay.com/api/?key=18202644-f6430b032268bc6174e356a54&q=${busqueda}&per_page=${ipp}`
+      const url = `https://pixabay.com/api/?key=18202644-f6430b032268bc6174e356a54&q=${busqueda}&per_page=${ipp}&page=${paginaActual}`
 
       const consulta = await Axios.get(url)
       setImagenes(consulta.data.hits)
+      
+      setTotalPaginas(Math.ceil(consulta.data.totalHits/ipp))
+
+      const jumbotron = document.querySelector('.jumbotron');
+      jumbotron.scrollIntoView({behavior: 'smooth'})
     }
     consultaApi()
-  }, [busqueda])
+  }, [busqueda, paginaActual])
+
+  const pagAnterior = () => {
+    const pagActual = paginaActual -1 ;
+    if(pagActual === 0) return
+    setPaginaActual(pagActual)
+  }
+
+  const pagSiguiente = () => {
+    const pagActual = paginaActual + 1;
+    if(pagActual > totalPaginas) return
+    setPaginaActual(pagActual)
+  }
 
   return (
     <div className="container">
@@ -32,6 +52,26 @@ function App() {
         <Listado
           imagenes = {imagenes}
         />
+
+        {
+          paginaActual === 1 ? null : 
+          <button 
+            type="button" 
+            className="bbtn btn-info mr-1"
+            onClick={pagAnterior}
+          >&laquo; Anterior
+          </button>
+        }
+        {
+          paginaActual === totalPaginas ? null :
+          <button 
+            type="button"
+            className="bbtn btn-info mr-1"
+            onClick={pagSiguiente}
+          >Siguiente &raquo;
+          </button>
+        }
+
       </div>
     </div>
   );

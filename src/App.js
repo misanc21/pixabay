@@ -9,6 +9,7 @@ function App() {
   const [busqueda, setBusqueda] = useState('')
   const [imagenes, setImagenes] = useState([])
   const [sinImagenes, setSinImagenes] = useState(false)
+  const [changeSubmit, setChangeSubmit] = useState(false)
 
   const [paginaActual, setPaginaActual] = useState(1)
   const [totalPaginas, setTotalPaginas] = useState(1)
@@ -23,7 +24,7 @@ function App() {
       setImagenes(consulta.data.hits)
 
       setTotalPaginas(Math.ceil(consulta.data.totalHits / ipp))
-      if (consulta.data.totalHits === 0) setSinImagenes(true)
+      consulta.data.totalHits === 0? setSinImagenes(true) : setSinImagenes(false)
 
       const jumbotron = document.querySelector('.jumbotron');
       jumbotron.scrollIntoView({ behavior: 'smooth' })
@@ -31,6 +32,10 @@ function App() {
     }
     consultaApi()
   }, [busqueda, paginaActual])
+
+  useEffect(() => {
+    setPaginaActual(1)
+  }, [changeSubmit])
 
   const pagAnterior = () => {
     const pagActual = paginaActual - 1;
@@ -50,6 +55,8 @@ function App() {
         <p className="lead text-center">Buscador de imagenes</p>
         <Formulario
           setBusqueda={setBusqueda}
+          setChangeSubmit={setChangeSubmit}
+          changeSubmit = {changeSubmit}
         />
       </div>
       <div className="row justify-content-center">

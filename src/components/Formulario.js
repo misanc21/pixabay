@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Error from './Error'
 
-const Formulario = ( {setBusqueda} ) => {
+const Formulario = ( {setBusqueda, setChangeSubmit, changeSubmit} ) => {
 
     const [termino, setTermino] = useState('')
     const [error, setError] = useState(false)
@@ -17,6 +17,7 @@ const Formulario = ( {setBusqueda} ) => {
         }
         setError(false)
         setBusqueda(termino)
+        changeSubmit ? setChangeSubmit(false) : setChangeSubmit(true)
     }
 
     return (

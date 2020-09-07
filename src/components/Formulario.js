@@ -49,7 +49,9 @@ const Formulario = ( {setBusqueda, setChangeSubmit, changeSubmit} ) => {
 }
 
 Formulario.propTypes = {
-    setBusqueda: PropTypes.func.isRequired
+    setBusqueda: PropTypes.func.isRequired,
+    setChangeSubmit: PropTypes.func.isRequired,
+    changeSubmit: PropTypes.bool.isRequired
 }
 
 export default Formulario;
